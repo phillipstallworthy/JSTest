@@ -65,33 +65,83 @@ function trialDivision(a, b, k) {
 }
 
 /*
- * return an array of primes to check as divisors of an integer n
- * building a sieve to the max we know our tests are going up to
- * Only need to go to prime squared is less than or equal to max
- * return array of primes.
- * 
+ * return an array of primes
+ * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
  */
 
-function primes(max) {
-  var root = Math.ceil(Math.sqrt(max))
+ //mark them all true/prime
+ function primes(max) {
   var integers = [];
-  for (i = 0; i <= root; i++) {
+  for (i = 0; i <= max; i++) {
     integers[i] = true;
   }
 
-  integers[0] = false;
-  integers[1] = false;
+
+  integers[0] = false; // 0 is not a prime
+  integers[1] = false; // 1 is
 
   //mark all the even ones as false (not prime)
-  var notPrime = 2;
-  for (i = notPrime; i <= root; i += notPrime) {
-    integers[1] = false;
+  var composite = 2;
+
+  //TODO: find the next prime to act as the root of the sieve, the next true value.
+  // first one should be 2, then 3, 5, etc.
+  //var composite = integers.findIndex(function(){return true;});
+
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
   }
 
-  //find first true in integers, start at notPrime
-  for(i=notPrime; i<= root; i++){
+  // incriment the composite - first pass 2 to 3
+  composite++;
 
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
   }
 
-  return integers;
+  //extract the primes
+  var primes = [];
+  for (i = 0; i <= max; i++) {
+    if (integers[i] == true) primes.push(i);
+  }
+
+  return primes;
+}
+
+
+/*
+ * return an array of primes
+ * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+ */
+
+ //mark them all true/prime
+function primes_works_for_10(max) {
+  var integers = [];
+  for (i = 0; i <= max; i++) {
+    integers[i] = true;
+  }
+
+
+  integers[0] = false; // 0 is not a prime
+  integers[1] = false; // 1 is
+
+  //mark all the even ones as false (not prime)
+  var composite = 2;
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
+  }
+
+  // incrimemt the composite - first pass 2 to 3
+  composite++;
+
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
+  }
+
+  //extract the primes
+  var primes = [];
+  for (i = 0; i <= max; i++) {
+    if (integers[i] == true) primes.push(i);
+  }
+
+  return primes;
 }
