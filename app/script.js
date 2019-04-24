@@ -113,6 +113,7 @@ function trialDivision(a, b, k) {
   }
 
   //test for last prime, based on max
+  // if composiste squared is greater that max, don't chose the next one
   
   //extract the primes
   var primes = [];
