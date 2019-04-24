@@ -91,13 +91,29 @@ function trialDivision(a, b, k) {
     integers[i] = false;
   }
 
-  // incriment the composite - first pass 2 to 3
+  // incriment the composite to an initial prime -  first pass 2 to 3
   composite++;
 
   for (i = composite + composite; i <= max; i += composite) {
     integers[i] = false;
   }
 
+  // incriment the composite - first pass 3 to 5
+  composite = 5;
+
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
+  }
+
+  // incriment the composite - to 7
+  composite = 7;
+
+  for (i = composite + composite; i <= max; i += composite) {
+    integers[i] = false;
+  }
+
+  //test for last prime, based on max
+  
   //extract the primes
   var primes = [];
   for (i = 0; i <= max; i++) {
