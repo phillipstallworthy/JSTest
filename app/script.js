@@ -38,14 +38,14 @@ function trialDivision(a, b, k) {
     //iterate prospective divisors
     var prime = 1;
     for (d = 2; d <= root; d += prime) {//iterate in primes!!
-    //for (d = 2; d^2 <= i; d += prime) //if prime (d's are all prime) squared is less that or equal to the number being tested, 
+      //for (d = 2; d^2 <= i; d += prime) //if prime (d's are all prime) squared is less that or equal to the number being tested, 
 
 
       //console.log("check devisor " + d);
 
       if (i % d == 0) {
         countDivisors++;
-        console.log( d + " added to divisors count " + countDivisors);
+        console.log(d + " added to divisors count " + countDivisors);
         //if co divisor is grateer than or equal to root (equal is perfect square) then add to countDivisors.
         if (i / d >= root) {
           countDivisors++;
@@ -72,7 +72,26 @@ function trialDivision(a, b, k) {
  * 
  */
 
-function primes(max){
-  
-  //return array of primes
+function primes(max) {
+  var root = Math.ceil(Math.sqrt(max))
+  var integers = [];
+  for (i = 0; i <= root; i++) {
+    integers[i] = true;
+  }
+
+  integers[0] = false;
+  integers[1] = false;
+
+  //mark all the even ones as false (not prime)
+  var notPrime = 2;
+  for (i = notPrime; i <= root; i += notPrime) {
+    integers[1] = false;
+  }
+
+  //find first true in integers, start at notPrime
+  for(i=notPrime; i<= root; i++){
+
+  }
+
+  return integers;
 }
