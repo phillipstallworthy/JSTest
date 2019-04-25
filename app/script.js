@@ -1,3 +1,6 @@
+//global
+var primes;
+
 /*
  * 
  * a - lower limit integer
@@ -9,9 +12,12 @@
 */
 function evaluateDivisors(a, b, k) {
 
+  primes = primeSieve(Math.sqrt(b));
+
   return trialDivision(a, b, k);
 
 }
+
 
 /*
  * https://en.wikipedia.org/wiki/Trial_division
@@ -22,11 +28,12 @@ function evaluateDivisors(a, b, k) {
  * Then iterate the divisors, and for any not prime, find prime divisors, recursivly.
  * 
 */
+
 function trialDivision(a, b, k) {
 
   // the number of integers that have k divisors
   var countInt = 0;
-  var primes = primeSieve(Math.sqrt(b));
+
 
   // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
@@ -39,25 +46,62 @@ function trialDivision(a, b, k) {
     //var prime = 0; //prime array index, always start at 2, then 3,5,7,11 etc.
     //while (true) {
     // iterate all the primes, but include a test for a break!
-    for (p = 0; p < primes.length; p++) {
+    countDivisors = countDivisors + addPrimeDivisorsToCount(i, primes);
 
-      if (i % primes[p] == 0) {
-        console.log("found a prime divisor " + primes[p]);
-        countDivisors++;
-      }
-
-      //if the next prime squared is greater that i, then we're done
-      //(if it's equal then we want it. Perfect square!)
-      if (primes[p] * primes[p] > i) {
-        console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
-        break;
-      }
-    }
-    //
     if (countDivisors == k) {
       countInt++;
     }
   }
+  return countInt;
+}
+
+// prime global and read only?
+function addPrimeDivisorsToCount(number) {
+  var primeDevisors = 0;
+  var codivisor;
+  for (p = 0; p < primes.length; p++) {
+
+    if (i % primes[p] == 0) {
+      console.log("found a prime divisor " + primes[p]);
+      primeDevisors++;
+      codivisor = i / primes[p];
+      console.log("codivisor is " + codivisor);
+    }
+    //if codivisor is prime, carry on, it will be found later
+    //if codivisor is composite, find prime devisors
+    
+    //TODO - this is the bit to fix!!
+    //if (isComposite(codivisor)) { //suspect you run for ever
+    //if (i % primes[p] == 0) //just try all co-divisors
+    //  primeDevisors = primeDevisors + addPrimeDivisorsToCount(codivisor);
+    //}
+
+    //if the next prime squared is greater that i, then we're done
+    //(if it's equal then we want it. Perfect square!)
+    if (primes[p] * primes[p] > i) {
+      console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
+      return primeDevisors;
+    }
+  }
+  return primeDevisors;
+}
+
+function isComposite(n) {
+  //iterate primes up to n
+  console.log("check prime " + n);
+  var index = 0;
+  while (true) {
+    if (primes[index] == n) {
+      console.log("prime");
+      return false;
+    }
+    if (primes[index] > n) {
+      console.log("composite");
+      return true;
+    }
+    index++
+  }
+}
 
 /*
  * https://en.wikipedia.org/wiki/Trial_division
