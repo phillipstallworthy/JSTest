@@ -12,7 +12,7 @@
       });
 
       it("Run up to 100,000 to see the time - TODO find a way for a time only test.", function() {
-        primes(100000);
+        primeSieve(100000);
         expect(true).toBe(true);
       });
 

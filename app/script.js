@@ -13,56 +13,101 @@ function evaluateDivisors(a, b, k) {
 
 }
 
-
 /*
  * https://en.wikipedia.org/wiki/Trial_division
  * 
  * Very simple trial division - just to get going!
+ * 
+ * Get all integer divisors
+ * Then iterate the divisors, and for any not prime, find prime divisors, recursivly.
  * 
 */
 function trialDivision(a, b, k) {
 
   // the number of integers that have k divisors
   var countInt = 0;
+  var primes = primeSieve(Math.sqrt(b));
 
-  console.log("=========================================================================");
-  console.log("check integer from " + a + " to " + b + " for " + k);
-  console.log("=========================================================================");
-
-  // iterate full range of integers
+  // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
 
-    var root = Math.sqrt(i); //only need to check to the sqr root of each number
+    console.log("check " + i);
+
     var countDivisors = 0;
 
-    //iterate prospective divisors
-    var prime = 1;
-    for (d = 2; d <= root; d += prime) {//iterate in primes!!
-      //for (d = 2; d^2 <= i; d += prime) //if prime (d's are all prime) squared is less that or equal to the number being tested, 
+    //iterate the prospective divisors
+    //var prime = 0; //prime array index, always start at 2, then 3,5,7,11 etc.
+    //while (true) {
+    // iterate all the primes, but include a test for a break!
+    for (p = 0; p < primes.length; p++) {
 
-
-      //console.log("check devisor " + d);
-
-      if (i % d == 0) {
+      if (i % primes[p] == 0) {
+        console.log("found a prime divisor " + primes[p]);
         countDivisors++;
-        console.log(d + " added to divisors count " + countDivisors);
-        //if co divisor is grateer than or equal to root (equal is perfect square) then add to countDivisors.
-        if (i / d >= root) {
-          countDivisors++;
-          console.log("=========================================================================");
-          console.log("Co divisor is greater that root " + root + " of integer being tested!");
-          console.log(i / d + " added to divisors count " + countDivisors);
-          console.log("=========================================================================");
-        }
+      }
+
+      //if the next prime squared is greater that i, then we're done
+      //(if it's equal then we want it. Perfect square!)
+      if (primes[p] * primes[p] > i) {
+        console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
+        break;
       }
     }
-
+    //
     if (countDivisors == k) {
       countInt++;
     }
   }
+
+/*
+ * https://en.wikipedia.org/wiki/Trial_division
+ * 
+ * Very simple trial division - just to get going!
+ * 
+ * TODO:currently only gets the value of the prime divisors, not the count.
+ * IE it says 8 has 1 prime factor, 2. When I nee the count, 3 lots of 2!
+*/
+function trialDivision_working_but_no_prime_count(a, b, k) {
+
+  // the number of integers that have k divisors
+  var countInt = 0;
+  var primes = primeSieve(Math.sqrt(b));
+
+  // iterate full range of integers and look for divisors
+  for (i = a; i <= b; i++) {
+
+    console.log("check " + i);
+
+    var countDivisors = 0;
+
+    //iterate the prospective divisors
+    //var prime = 0; //prime array index, always start at 2, then 3,5,7,11 etc.
+    //while (true) {
+    // iterate all the primes, but include a test for a break!
+    for (p = 0; p < primes.length; p++) {
+
+      if (i % primes[p] == 0) {
+        console.log("found a prime divisor " + primes[p]);
+        countDivisors++;
+      }
+
+      //if the next prime squared is greater that i, then we're done
+      //(if it's equal then we want it. Perfect square!)
+      if (primes[p] * primes[p] > i) {
+        console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
+        break;
+      }
+    }
+    //
+    if (countDivisors == k) {
+      countInt++;
+    }
+  }
+
+
   return countInt;
 }
+
 
 /*
  * return an array of primes from 2 to max. Max does not need to be prime.
@@ -71,8 +116,7 @@ function trialDivision(a, b, k) {
  * 
  */
 
-//mark them all true/prime
-function primes(max) {
+function primeSieve(max) {
 
   //initialise an array with all true(=prime)
   var integers = [];
