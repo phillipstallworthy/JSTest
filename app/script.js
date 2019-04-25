@@ -65,12 +65,16 @@ function trialDivision(a, b, k) {
 }
 
 /*
- * return an array of primes
+ * return an array of primes from 2 to max. Max does not need to be prime.
+ * 100,000 runs in 0.014 sec. :)
  * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+ * 
  */
 
- //mark them all true/prime
- function primes(max) {
+//mark them all true/prime
+function primes(max) {
+
+  //initialise an array with all true(=prime)
   var integers = [];
   for (i = 0; i <= max; i++) {
     integers[i] = true;
@@ -78,43 +82,25 @@ function trialDivision(a, b, k) {
 
 
   integers[0] = false; // 0 is not a prime
-  integers[1] = false; // 1 is
+  integers[1] = false; // neither is 1
 
-  //mark all the even ones as false (not prime)
-  var composite = 2;
+  var prime = 1;
 
-  //TODO: find the next prime to act as the root of the sieve, the next true value.
-  // first one should be 2, then 3, 5, etc.
-  //var composite = integers.findIndex(function(){return true;});
+  while (true) {
 
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
+    // find the next true value in the array. In this sieve, its the next prime.
+    var prime = integers.indexOf(true, prime + 1);
+
+    //if there are no multiples of prime left then break, 
+    //and all numbers not marked false are left as true, which they are!
+    if (prime + prime > max) break;
+
+    //mark all the multiples of prime as not prime
+    for (i = prime + prime; i <= max; i += prime) {
+      integers[i] = false;
+    }
   }
 
-  // incriment the composite to an initial prime -  first pass 2 to 3
-  composite++;
-
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
-  }
-
-  // incriment the composite - first pass 3 to 5
-  composite = 5;
-
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
-  }
-
-  // incriment the composite - to 7
-  composite = 7;
-
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
-  }
-
-  //test for last prime, based on max
-  // if composiste squared is greater that max, don't chose the next one
-  
   //extract the primes
   var primes = [];
   for (i = 0; i <= max; i++) {
@@ -125,40 +111,5 @@ function trialDivision(a, b, k) {
 }
 
 
-/*
- * return an array of primes
- * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
- */
-
- //mark them all true/prime
-function primes_works_for_10(max) {
-  var integers = [];
-  for (i = 0; i <= max; i++) {
-    integers[i] = true;
-  }
 
 
-  integers[0] = false; // 0 is not a prime
-  integers[1] = false; // 1 is
-
-  //mark all the even ones as false (not prime)
-  var composite = 2;
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
-  }
-
-  // incrimemt the composite - first pass 2 to 3
-  composite++;
-
-  for (i = composite + composite; i <= max; i += composite) {
-    integers[i] = false;
-  }
-
-  //extract the primes
-  var primes = [];
-  for (i = 0; i <= max; i++) {
-    if (integers[i] == true) primes.push(i);
-  }
-
-  return primes;
-}
