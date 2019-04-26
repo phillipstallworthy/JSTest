@@ -64,38 +64,38 @@ function trialDivision(a, b, k) {
  */
 function countDivisors(num) {
 
-  //console.log("#######################################");
-  //console.log("find devisors of " + num);
-
-  var primeDivisors = 0;
+  var divCount = 0;
   var codivisor = 0;
-  for (p = 0; p < primes.length; p++) {
+  for (var p = 0; p < primes.length; p++) {
+    console.log("checking " + primes[p]);
 
     if (num % primes[p] == 0) {
-      primeDivisors++;
+      divCount++;
       divLog.push(primes[p]); //logging
 
       codivisor = num / primes[p];
+      console.log("Number is " + num + " divisor " + primes[p] + " codivisor " + codivisor);
 
       if (primes[p] == codivisor){ //for example 4 has two equal prime divisors of 2, both need counting
-        primeDivisors++
+        //divCount++
         divLog.push(codivisor); //logging
       } else if (isComposite(codivisor)){ //if composite, resurse back in to find primes.
         divLog.push(codivisor); //logging
-        primeDivisors = primeDivisors + countDivisors(codivisor);
+        console.log("recurse!");
+        divCount = divCount + countDivisors(codivisor);
       }
       //if codivisor is prime, carry on, it will be found later
     }
 
-    //if the next prime squared is greater that i, then we're done
+    //if the next prime squared is greater that the number we're tesing, then we're done
     //(if it's equal then we are not done yet. Perfect square!)
     //TODO - is this correct???
-    if (primes[p] + primes[p] > num) {
-      //console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + num);
-      return primeDivisors;
+    if (primes[p] * primes[p] > num) {
+      console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + num);
+      return divCount;
     }
   }
-  return primeDivisors;
+  return divCount;
 }
 
 function isComposite(n) {

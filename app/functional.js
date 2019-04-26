@@ -61,10 +61,10 @@
       });
 
       it("18 has 3 prime divisors", function() {
-        console.log("test 14");
+        console.log("test 18");
         divLog = [];
         expect(countDivisors(18)).toBe(3);
-        console.log(18 +" has " + 3 + " prime divisors " + divLog.toString()); //TODO, where is 6???
+        console.log(18 +" has divisors of " + divLog.toString());
       });
 
     });
