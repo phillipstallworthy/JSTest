@@ -1,5 +1,6 @@
 //global 
 var primes;
+var divLog =[]; //logging only, crappy here, not good for testing....
 
 /*
  * 
@@ -37,8 +38,9 @@ function trialDivision(a, b, k) {
   // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
 
+    divLog = []; //reset each time (another downside of global)
     var divisors = countDivisors(i);
-    console.log(i +" has " + divisors + " divisors");
+    console.log(i +" has " + divisors + " divisors " + divLog.toString());
 
     if (divisors == k) {
       countInt++;
@@ -47,9 +49,17 @@ function trialDivision(a, b, k) {
   return countInt;
 }
 
-/*
- *
+/* Find Prime Divisors (factors)
+ * https://en.wikipedia.org/wiki/Trial_division
+ * 
+ * Very simple trial division - just to get going!
  * return a count of the number of prime divisors of n
+ * 
+ * question acutally wants positive divisors of n, including 1 and n itself
+ * https://en.wikipedia.org/wiki/Table_of_divisors#1_to_100
+ * but that seems a bit pointless, 1 and self add no value to the calc.
+ * Prime divisors are the most interesting property 
+ * https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic
  * 
  */
 function countDivisors(num) {
@@ -62,13 +72,16 @@ function countDivisors(num) {
   for (p = 0; p < primes.length; p++) {
 
     if (num % primes[p] == 0) {
-      //console.log("found a prime divisor " + primes[p]);
       primeDivisors++;
+      divLog.push(primes[p]); //logging
+
       codivisor = num / primes[p];
 
       if (primes[p] == codivisor){ //for example 4 has two equal prime divisors of 2, both need counting
         primeDivisors++
+        divLog.push(codivisor); //logging
       } else if (isComposite(codivisor)){ //if composite, resurse back in to find primes.
+        divLog.push(codivisor); //logging
         primeDivisors = primeDivisors + countDivisors(codivisor);
       }
       //if codivisor is prime, carry on, it will be found later
@@ -76,6 +89,7 @@ function countDivisors(num) {
 
     //if the next prime squared is greater that i, then we're done
     //(if it's equal then we are not done yet. Perfect square!)
+    //TODO - is this correct???
     if (primes[p] + primes[p] > num) {
       //console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + num);
       return primeDivisors;
@@ -99,49 +113,6 @@ function isComposite(n) {
     }
     q++
   }
-}
-
-/*
- * https://en.wikipedia.org/wiki/Trial_division
- * 
- * Very simple trial division - just to get going!
- * 
- * TODO:currently only gets the value of the prime divisors, not the count.
- * IE it says 8 has 1 prime factor, 2. When I nee the count, 3 lots of 2!
-*/
-function trialDivision_working_but_no_prime_count(a, b, k) {
-
-  // the number of integers that have k divisors
-  var countInt = 0;
-  var primes = primeSieve(Math.sqrt(b));
-
-  // iterate full range of integers and look for divisors
-  for (i = a; i <= b; i++) {
-
-    //console.log("check " + i);
-
-    var countDivisors = 0;
-
-    //iterate the prospective divisors
-    for (p = 0; p < primes.length; p++) {
-
-      if (i % primes[p] == 0) {
-        //console.log("found a prime divisor " + primes[p]);
-        countDivisors++;
-      }
-
-      //if the next prime squared is greater that i, then we're done
-      //(if it's equal then we want it. Perfect square!)
-      if (primes[p] * primes[p] > i) {
-        //console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
-        break;
-      }
-    }
-    if (countDivisors == k) {
-      countInt++;
-    }
-  }
-  return countInt;
 }
 
 

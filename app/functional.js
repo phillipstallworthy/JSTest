@@ -21,8 +21,13 @@
   describe("Composite test", function() {
     describe("Test prime and compsite numbers", function() {
       primes = primeSieve(20);
+      //divLog
       it("Test 4", function() {
         expect(isComposite(4)).toBe(true);
+      });
+
+      it("Test 6", function() {
+        expect(isComposite(6)).toBe(true);
       });
 
       it("test 11", function() {
@@ -35,18 +40,22 @@
     describe("Count divisors on single numbers", function() {
       primes = primeSieve(2000);
       it("6 has 2 divisors", function() {
+        console.log("test 6");
         expect(countDivisors(6)).toBe(2);
       });
 
       it("8 has 3 divisors", function() {
+        console.log("test 8");
         expect(countDivisors(8)).toBe(3);
       });
       
       it("1386 has 5 divisors", function() {
+        console.log("test 1386");
         expect(countDivisors(1386)).toBe(5);
       });
 
       it("14 has 2 divisors", function() {
+        console.log("test 14");
         expect(countDivisors(14)).toBe(2);
       });
 
