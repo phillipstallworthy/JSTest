@@ -1,4 +1,4 @@
-//global
+//global 
 var primes;
 
 /*
@@ -12,7 +12,7 @@ var primes;
 */
 function evaluateDivisors(a, b, k) {
 
-  primes = primeSieve(Math.sqrt(b));
+  primes = primeSieve(b);
 
   return trialDivision(a, b, k);
 
@@ -34,72 +34,70 @@ function trialDivision(a, b, k) {
   // the number of integers that have k divisors
   var countInt = 0;
 
-
   // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
 
-    console.log("check " + i);
+    var divisors = countDivisors(i);
+    console.log(i +" has " + divisors + " divisors");
 
-    var countDivisors = 0;
-
-    //iterate the prospective divisors
-    //var prime = 0; //prime array index, always start at 2, then 3,5,7,11 etc.
-    //while (true) {
-    // iterate all the primes, but include a test for a break!
-    countDivisors = countDivisors + addPrimeDivisorsToCount(i, primes);
-
-    if (countDivisors == k) {
+    if (divisors == k) {
       countInt++;
     }
   }
   return countInt;
 }
 
-// prime global and read only?
-function addPrimeDivisorsToCount(number) {
-  var primeDevisors = 0;
-  var codivisor;
+/*
+ *
+ * return a count of the number of prime divisors of n
+ * 
+ */
+function countDivisors(num) {
+
+  //console.log("#######################################");
+  //console.log("find devisors of " + num);
+
+  var primeDivisors = 0;
+  var codivisor = 0;
   for (p = 0; p < primes.length; p++) {
 
-    if (i % primes[p] == 0) {
-      console.log("found a prime divisor " + primes[p]);
-      primeDevisors++;
-      codivisor = i / primes[p];
-      console.log("codivisor is " + codivisor);
+    if (num % primes[p] == 0) {
+      //console.log("found a prime divisor " + primes[p]);
+      primeDivisors++;
+      codivisor = num / primes[p];
+
+      if (primes[p] == codivisor){ //for example 4 has two equal prime divisors of 2, both need counting
+        primeDivisors++
+      } else if (isComposite(codivisor)){ //if composite, resurse back in to find primes.
+        primeDivisors = primeDivisors + countDivisors(codivisor);
+      }
+      //if codivisor is prime, carry on, it will be found later
     }
-    //if codivisor is prime, carry on, it will be found later
-    //if codivisor is composite, find prime devisors
-    
-    //TODO - this is the bit to fix!!
-    //if (isComposite(codivisor)) { //suspect you run for ever
-    //if (i % primes[p] == 0) //just try all co-divisors
-    //  primeDevisors = primeDevisors + addPrimeDivisorsToCount(codivisor);
-    //}
 
     //if the next prime squared is greater that i, then we're done
-    //(if it's equal then we want it. Perfect square!)
-    if (primes[p] * primes[p] > i) {
-      console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
-      return primeDevisors;
+    //(if it's equal then we are not done yet. Perfect square!)
+    if (primes[p] + primes[p] > num) {
+      //console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + num);
+      return primeDivisors;
     }
   }
-  return primeDevisors;
+  return primeDivisors;
 }
 
 function isComposite(n) {
-  //iterate primes up to n
-  console.log("check prime " + n);
-  var index = 0;
+  var q = 0;
+  //console.log("is " + n + " compsite?")
   while (true) {
-    if (primes[index] == n) {
-      console.log("prime");
+    //console.log("Checking prime index " + q + " which is " + primes[q]);
+    if (primes[q] == n) {
+      //console.log(n + " is prime");
       return false;
     }
-    if (primes[index] > n) {
-      console.log("composite");
+    if (primes[q] > n) {
+      //console.log(n + " is composite");
       return true;
     }
-    index++
+    q++
   }
 }
 
@@ -120,35 +118,29 @@ function trialDivision_working_but_no_prime_count(a, b, k) {
   // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
 
-    console.log("check " + i);
+    //console.log("check " + i);
 
     var countDivisors = 0;
 
     //iterate the prospective divisors
-    //var prime = 0; //prime array index, always start at 2, then 3,5,7,11 etc.
-    //while (true) {
-    // iterate all the primes, but include a test for a break!
     for (p = 0; p < primes.length; p++) {
 
       if (i % primes[p] == 0) {
-        console.log("found a prime divisor " + primes[p]);
+        //console.log("found a prime divisor " + primes[p]);
         countDivisors++;
       }
 
       //if the next prime squared is greater that i, then we're done
       //(if it's equal then we want it. Perfect square!)
       if (primes[p] * primes[p] > i) {
-        console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
+        //console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + i);
         break;
       }
     }
-    //
     if (countDivisors == k) {
       countInt++;
     }
   }
-
-
   return countInt;
 }
 
