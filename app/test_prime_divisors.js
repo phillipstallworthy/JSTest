@@ -21,8 +21,8 @@
 
     });
     describe("Handles larger ranges,", function() {
-      xit("Handles a range of 25k where A = 1103 B = 51103 and K = 17", function() {
-        expect(evaluateDivisors(1103,26103,21)).toBe(8);
+      it("Handles a range of 25k where A = 1103 B = 51103 and K = 17", function() {
+        expect(evaluateDivisors(1103,26103,21)).toBe(0);
       });
 
       //only un-x this spec if the specs suite is running in less than a second

@@ -33,30 +33,38 @@
       it("test 11", function() {
         expect(isComposite(11)).toBe(false);
       });
+      
 
     });
   });
   describe("Prime Divisor count test", function() {
     describe("Count divisors on single numbers", function() {
       primes = primeSieve(2000);
-      it("6 has 2 divisors", function() {
+      it("6 has 2 prime divisors", function() {
         console.log("test 6");
         expect(countDivisors(6)).toBe(2);
       });
 
-      it("8 has 3 divisors", function() {
+      it("8 has 3 dprime ivisors", function() {
         console.log("test 8");
         expect(countDivisors(8)).toBe(3);
       });
       
-      it("1386 has 5 divisors", function() {
+      it("1386 has 5 prime divisors", function() {
         console.log("test 1386");
         expect(countDivisors(1386)).toBe(5);
       });
 
-      it("14 has 2 divisors", function() {
+      it("14 has 2 prime divisors", function() {
         console.log("test 14");
         expect(countDivisors(14)).toBe(2);
+      });
+
+      it("18 has 3 prime divisors", function() {
+        console.log("test 14");
+        divLog = [];
+        expect(countDivisors(18)).toBe(3);
+        console.log(18 +" has " + 3 + " prime divisors " + divLog.toString()); //TODO, where is 6???
       });
 
     });
