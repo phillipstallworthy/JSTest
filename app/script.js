@@ -10,7 +10,7 @@
 */
 function evaluateDivisors(a, b, k) {
 
-  primes = primeSieve(b); //optimise - sqr root plus one prime?
+  primes = primeSieve(b); //optimise - sqr root plus one prime? https://en.wikipedia.org/wiki/Trial_division
 
   //TODO: function to multiple out the divisors from the factors. should be simple enough, and quick
   //TODO: optimise - https://en.wikipedia.org/wiki/Fermat%27s_factorization_method ?? diff of two squares.
@@ -19,6 +19,50 @@ function evaluateDivisors(a, b, k) {
 
 }
 
+function divisorCount(a, b, k,primes) {
+
+  var countInt = 0;
+
+  for (i = a; i <= b; i++) {
+
+    var factors = primeFactor(i,primes);
+
+    if (factors.length == k) {
+      countInt++;
+    }
+  }
+  return countInt;
+}
+
+/*
+ * take and arrary of prime factors for num
+ * and fill in all the integer divisors possible
+ * Spec: https://en.wikipedia.org/wiki/Table_of_divisors
+ * https://en.wikipedia.org/wiki/Table_of_prime_factors#1_to_100
+ * 
+ * Psydo code - TODO: finish, and check, then code.
+ * 18 
+ * prime factors 2,3,3
+ * divisors 1, 2, 3, 6, 9, 18
+ * 
+ * 36
+ * prime factors 2,2,3,3
+ * divisors 1, 2, 3, 4, 6, 9, 12, 18, 36 
+ * 
+ * so, add 1 and num.
+ * 2,s
+ * multiply 1st number by each of the rest
+ * multiply 2nd number by each of the rest
+ * finish on last (for loop?)
+ * 3's 
+ * multiply 1st two numbers by the rest
+ * 
+ */
+
+function allDivisors(num, primes){
+
+
+}
 
 /*
  * https://en.wikipedia.org/wiki/Trial_division
@@ -28,7 +72,6 @@ function evaluateDivisors(a, b, k) {
  * Return the number of integers in the range a- inclusive that have k divisors
  * 
 */
-
 function trialDivision(a, b, k,primes) {
 
   var countInt = 0;
