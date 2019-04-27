@@ -19,13 +19,13 @@ function evaluateDivisors(a, b, k) {
 
 }
 
-function divisorCount(a, b, k,primes) {
+function divisorCount(a, b, k, primes) {
 
   var countInt = 0;
 
   for (i = a; i <= b; i++) {
 
-    var factors = primeFactor(i,primes);
+    var factors = primeFactor(i, primes);
 
     if (factors.length == k) {
       countInt++;
@@ -36,31 +36,30 @@ function divisorCount(a, b, k,primes) {
 
 /*
  * take and arrary of prime factors for num
- * and fill in all the integer divisors possible
+ * and add in all the integer divisors possible
  * Spec: https://en.wikipedia.org/wiki/Table_of_divisors
  * https://en.wikipedia.org/wiki/Table_of_prime_factors#1_to_100
  * 
- * Psydo code - TODO: finish, and check, then code.
- * 18 
- * prime factors 2,3,3
- * divisors 1, 2, 3, 6, 9, 18
+ * for a 5 value prime factor array
+ * p*q*r*s*t
  * 
- * 36
- * prime factors 2,2,3,3
- * divisors 1, 2, 3, 4, 6, 9, 12, 18, 36 
- * 
- * so, add 1 and num.
- * 2,s
- * multiply 1st number by each of the rest
- * multiply 2nd number by each of the rest
- * finish on last (for loop?)
- * 3's 
- * multiply 1st two numbers by the rest
  * 
  */
 
-function allDivisors(num, primes){
+function allDivisors(primes) {
+  var divisors = [];
+  var len = primes.length;
+  console.log("Prime factors " + primes.toString() + " length " + len);
+  var limit = len - 2; //works for the index of the first multiple, and the number of multiples required.
 
+  for (var p = 0; p <= limit; p++) {
+    //number of multiples
+    for (var m = 1; m <= limit; m++){
+      console.log(primes[p] + " x " + m + " : " +primes[m]);
+    }
+  }
+
+  return [1, 2, 3, 4];
 
 }
 
@@ -72,13 +71,13 @@ function allDivisors(num, primes){
  * Return the number of integers in the range a- inclusive that have k divisors
  * 
 */
-function trialDivision(a, b, k,primes) {
+function trialDivision(a, b, k, primes) {
 
   var countInt = 0;
 
   for (i = a; i <= b; i++) {
 
-    var factors = primeFactor(i,primes);
+    var factors = primeFactor(i, primes);
 
     if (factors.length == k) {
       countInt++;
@@ -95,12 +94,10 @@ function trialDivision(a, b, k,primes) {
  * test data:
  * https://en.wikipedia.org/wiki/Table_of_prime_factors
  * 
- * TODO, divisors
- * https://en.wikipedia.org/wiki/Table_of_divisors
  * 
  * num - the number to factorise
  * primes - an array of primes that goes to at least one prime
- * past the sqr root of num.
+ * past the sqr root of num. (TODO, prime array currently goes to limit, optimise!)
  */
 function primeFactor(num, primes) {
   var primeFactors = [];
@@ -108,29 +105,29 @@ function primeFactor(num, primes) {
     var prime = primes[i];
 
     // Prime factors only, so empty [] return for primes, rather that [1,19].
-    if (num == prime){
+    if (num == prime) {
       return [];
     }
 
     if (num % prime == 0) {
-      console.log("prime " + prime + " is a factor of " + num);
+      //console.log("prime " + prime + " is a factor of " + num);
       primeFactors.push(prime);
       var result = num / prime;
 
       if (prime ** 2 > result) {
         primeFactors.push(result);
-        console.log("done because " + prime + " squared is greater than " + result);
+        //console.log("done because " + prime + " squared is greater than " + result);
         return primeFactors;
       }
 
       if (isComposite(result, primes)) {
-        primeFactors = primeFactors.concat(primeFactor(result,primes));
+        primeFactors = primeFactors.concat(primeFactor(result, primes));
       } else { // last divisor is always prime. Needs to be an else, so not run on return from recursion. 
-        console.log("prime result of division " + result);
+        //console.log("prime result of division " + result);
         primeFactors.push(result);
       }
 
-      console.log("final prime factors of " + num + " are " + primeFactors.toString());
+      //console.log("final prime factors of " + num + " are " + primeFactors.toString());
       return primeFactors;
     }
   }
@@ -203,3 +200,4 @@ function primeSieve(max) {
 
   return primes;
 }
+  //

@@ -81,5 +81,15 @@
 
     });
   });
+
+  describe("Fill in the divisors", function() {
+    describe("Fill in the divisors", function() {
+
+      it("1368 has 5 prime divisors 2,3,3,7,11", function() {
+        expect(allDivisors([2,3,3,7,11])).toEqual([2,3]);
+      });
+
+    });
+  });
 })();
 
