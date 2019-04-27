@@ -1,6 +1,3 @@
-//global 
-var primes;
-var divLog =[]; //logging only, crappy here, not good for testing....
 
 /*
  * 
@@ -8,14 +5,14 @@ var divLog =[]; //logging only, crappy here, not good for testing....
  * b - higher limit
  * k - number of divisors we are looking for
  * 
- * Return the number of integers between the inclucive limits that have k divisors
+ * Return the number of integers in the range a- inclusive that have k divisors
  *
 */
 function evaluateDivisors(a, b, k) {
 
-  primes = primeSieve(b);
+  primes = primeSieve(b); //optimise - sqr root plus one prime?
 
-  return trialDivision(a, b, k);
+  return trialDivision(a, b, k, primes);
 
 }
 
@@ -25,89 +22,89 @@ function evaluateDivisors(a, b, k) {
  * 
  * Very simple trial division - just to get going!
  * 
- * Get all integer divisors
- * Then iterate the divisors, and for any not prime, find prime divisors, recursivly.
+ * Return the number of integers in the range a- inclusive that have k divisors
  * 
 */
 
-function trialDivision(a, b, k) {
+function trialDivision(a, b, k,primes) {
 
-  // the number of integers that have k divisors
   var countInt = 0;
 
-  // iterate full range of integers and look for divisors
   for (i = a; i <= b; i++) {
 
-    divLog = []; //reset each time (another downside of global)
-    var divisors = countDivisors(i);
-    console.log(i +" has " + divisors + " divisors " + divLog.toString());
+    var factors = primeFactor(i,primes);
 
-    if (divisors == k) {
+    if (factors.length == k) {
       countInt++;
     }
   }
   return countInt;
 }
 
-/* Find Prime Divisors (factors)
- * https://en.wikipedia.org/wiki/Trial_division
+/*
+ * Return an array of the prime factors.
+ * Based in simple prime trial division described here
+ * https://en.wikipedia.org/wiki/Factorization#General_methods
  * 
- * Very simple trial division - just to get going!
- * return a count of the number of prime divisors of n
+ * test data:
+ * https://en.wikipedia.org/wiki/Table_of_prime_factors
  * 
- * question acutally wants positive divisors of n, including 1 and n itself
- * https://en.wikipedia.org/wiki/Table_of_divisors#1_to_100
- * but that seems a bit pointless, 1 and self add no value to the calc.
- * Prime divisors are the most interesting property 
- * https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic
+ * TODO, divisors
+ * https://en.wikipedia.org/wiki/Table_of_divisors
  * 
+ * num - the number to factorise
+ * primes - an array of primes that goes to at least one prime
+ * past the sqr root of num.
  */
-function countDivisors(num) {
+function primeFactor(num, primes) {
+  var primeFactors = [];
+  for (var i = 0; i < primes.length; i++) {
+    var prime = primes[i];
 
-  var divCount = 0;
-  var codivisor = 0;
-  for (var p = 0; p < primes.length; p++) {
-    console.log("checking " + primes[p]);
-
-    if (num % primes[p] == 0) {
-      divCount++;
-      divLog.push(primes[p]); //logging
-
-      codivisor = num / primes[p];
-      console.log("Number is " + num + " divisor " + primes[p] + " codivisor " + codivisor);
-
-      if (primes[p] == codivisor){ //for example 4 has two equal prime divisors of 2, both need counting
-        //divCount++
-        divLog.push(codivisor); //logging
-      } else if (isComposite(codivisor)){ //if composite, resurse back in to find primes.
-        divLog.push(codivisor); //logging
-        console.log("recurse!");
-        divCount = divCount + countDivisors(codivisor);
-      }
-      //if codivisor is prime, carry on, it will be found later
+    // Prime factors only, so empty [] return for primes, rather that [1,19].
+    if (num == prime){
+      return [];
     }
 
-    //if the next prime squared is greater that the number we're tesing, then we're done
-    //(if it's equal then we are not done yet. Perfect square!)
-    //TODO - is this correct???
-    if (primes[p] * primes[p] > num) {
-      console.log("breaking on " + primes[p] + " because " + primes[p] * primes[p] + " is greater that " + num);
-      return divCount;
+    if (num % prime == 0) {
+      console.log("prime " + prime + " is a factor of " + num);
+      primeFactors.push(prime);
+      var result = num / prime;
+
+      if (prime ** 2 > result) {
+        primeFactors.push(result);
+        console.log("done because " + prime + " squared is greater than " + result);
+        return primeFactors;
+      }
+
+      if (isComposite(result, primes)) {
+        primeFactors = primeFactors.concat(primeFactor(result,primes));
+      } else { // last divisor is always prime. Needs to be an else, so not run on return from recursion. 
+        console.log("prime result of division " + result);
+        primeFactors.push(result);
+      }
+
+      console.log("final prime factors of " + num + " are " + primeFactors.toString());
+      return primeFactors;
     }
   }
-  return divCount;
 }
 
-function isComposite(n) {
+/*
+ * is num composite?
+ * primes is an array of primes that go to at least num
+ *
+ */
+function isComposite(num, primes) {
   var q = 0;
   //console.log("is " + n + " compsite?")
   while (true) {
     //console.log("Checking prime index " + q + " which is " + primes[q]);
-    if (primes[q] == n) {
+    if (primes[q] == num) {
       //console.log(n + " is prime");
       return false;
     }
-    if (primes[q] > n) {
+    if (primes[q] > num) {
       //console.log(n + " is composite");
       return true;
     }
@@ -117,7 +114,7 @@ function isComposite(n) {
 
 
 /*
- * return an array of primes from 2 to max. Max does not need to be prime.
+ * return an array of primes from 2 to num.
  * 100,000 runs in 0.014 sec. :)
  * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
  * 
@@ -160,7 +157,3 @@ function primeSieve(max) {
 
   return primes;
 }
-
-
-
-
