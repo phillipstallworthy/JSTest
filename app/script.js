@@ -12,6 +12,9 @@ function evaluateDivisors(a, b, k) {
 
   primes = primeSieve(b); //optimise - sqr root plus one prime?
 
+  //TODO: function to multiple out the divisors from the factors. should be simple enough, and quick
+  //TODO: optimise - https://en.wikipedia.org/wiki/Fermat%27s_factorization_method ?? diff of two squares.
+
   return trialDivision(a, b, k, primes);
 
 }
