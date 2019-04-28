@@ -43,24 +43,46 @@ function divisorCount(a, b, k, primes) {
  * for a 5 value prime factor array
  * p*q*r*s*t
  * 
- * 
+ * for example [2,3,4,5,6] is multipled out into these divisors
+ * 2.3 2.3.4 2.3.4.5 and 2.3.4.5.6
+ * 2.4 2.3.5 2.3.4.6
+ * 2.5 2.3.6 ..etc
+ * 2.6 2.4.5
+ * 3.4 .etc
+ * .etc
  */
 
 function allDivisors(primes) {
   var divisors = [];
   var len = primes.length;
   console.log("Prime factors " + primes.toString() + " length " + len);
-  var limit = len - 2; //works for the index of the first multiple, and the number of multiples required.
+  //var limit = len - 2; //works for the index of the first multiple, and the number of multiples required.
 
-  for (var p = 0; p <= limit; p++) {
-    //number of multiples
-    for (var m = 1; m <= limit; m++){
-      console.log(primes[p] + " x " + m + " : " +primes[m]);
+  for (var p = 0; p <= primes.length - 1; p++) { //p is the starting multipler, so last one not required.
+    var multiples = [];
+    //multiples.push(primes[p]);
+    //number of multiples - start at 2, go to length - 1. 
+    for (var expression_size = 1; expression_size <= primes.length - 1; expression_size++){
+      multiples.push(p);
+      for (m=1; m<= expression_size; m++){//always start at index 1,
+        for (var number_of_expressions = 1; number_of_expressions < primes.length - m + 1; number_of_expressions ++ ){
+          multiples.push(primes[m]);
+        }
+        console.log("multipes " + multiples.toString());
+      } 
     }
   }
 
   return [1, 2, 3, 4];
 
+}
+
+function multiply(list){
+  var answer = 1;
+  for (var i=0; i<list.length; i++){
+    answer = answer * list[i]
+  }
+  return answer;
 }
 
 /*
