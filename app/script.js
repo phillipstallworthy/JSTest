@@ -58,7 +58,7 @@ function divisorCount(a, b, k, primes) {
  *     ^ 6 of each 
  *           ^ 4 of each
  * 
- * TODO - each column needs an incrementor.
+ * TODO - each column needs an incrementor. or keep the previous ones, and build on top, within limits.
  * 
  * return an array of all divisors
  */
