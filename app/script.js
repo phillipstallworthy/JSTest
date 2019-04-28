@@ -35,51 +35,69 @@ function divisorCount(a, b, k, primes) {
 }
 
 /*
- * take and arrary of prime factors for num
- * and add in all the integer divisors possible
+ * add in all the integer divisors to an array of primes
+ * ie multiple every element by every other in every possible conbination.
+ * 
+ * These are whey, but don't affect the logic.
  * Spec: https://en.wikipedia.org/wiki/Table_of_divisors
  * https://en.wikipedia.org/wiki/Table_of_prime_factors#1_to_100
  * 
- * for a 5 value prime factor array
- * p*q*r*s*t
- * 
- * for example [2,3,4,5,6] is multipled out into these divisors
+ * for example [2,3,4,5,6] is multipled out into these multiples (and therefore devisors of original
+ * all multipled together)
  * 2.3 2.3.4 2.3.4.5 and 2.3.4.5.6
  * 2.4 2.3.5 2.3.4.6
- * 2.5 2.3.6 ..etc
- * 2.6 2.4.5
- * 3.4 .etc
- * .etc
+ * 2.5 2.3.6 2.3.5.6
+ * 2.6 2.4.5 2.4.5.6
+ * 3.4 2.4.6 3.4.5.6
+ * 3.5 2.5.6
+ * 3.6 3.4.5
+ * 4.5 3.4.6
+ * 4.6 3.5.6
+ * 5.6 4.5.6
+ * ^ 4 of each
+ *     ^ 6 of each 
+ *           ^ 4 of each
+ * 
+ * TODO - each column needs an incrementor.
+ * 
+ * return an array of all divisors
  */
 
 function allDivisors(primes) {
-  var divisors = [];
+  var allDivisors = [];
   var len = primes.length;
   console.log("Prime factors " + primes.toString() + " length " + len);
-  //var limit = len - 2; //works for the index of the first multiple, and the number of multiples required.
 
-  for (var p = 0; p <= primes.length - 1; p++) { //p is the starting multipler, so last one not required.
-    var multiples = [];
-    //multiples.push(primes[p]);
-    //number of multiples - start at 2, go to length - 1. 
-    for (var expression_size = 1; expression_size <= primes.length - 1; expression_size++){
-      multiples.push(p);
-      for (m=1; m<= expression_size; m++){//always start at index 1,
-        for (var number_of_expressions = 1; number_of_expressions < primes.length - m + 1; number_of_expressions ++ ){
-          multiples.push(primes[m]);
+  for (var exp_len = 1; exp_len <= (len - 1); exp_len++) {
+    //console.log("expression length foreach limit " + (len - 1) );
+    //console.log("expression length " + exp_len);
+    for (var init_mult = 0; init_mult <= (len - 1 - exp_len); init_mult++) {
+      //console.log("initial multipler foreach limit " + (len - 1 - exp_len));
+      //console.log("initial multiplyer " + init_mult);
+      for (var start_exp = init_mult + 1; start_exp <= (len - exp_len); start_exp++) {
+        //console.log("start of trailing expression " + start_exp); // crap, does this needs mixing up more?
+        var divisors = [];
+        //console.log("push " + init_mult);
+        divisors.push(primes[init_mult]);
+        for (var i = 0; i < exp_len; i++) {
+          //console.log("push expression element " + (primes[start_exp + i]));
+          divisors.push(primes[start_exp + i]);
         }
-        console.log("multipes " + multiples.toString());
-      } 
+        console.log(divisors.toString());
+        //console.log(" ");
+        //multiple all together
+        //add to return array
+      }
     }
   }
-
+  //sort
+  //dedup
   return [1, 2, 3, 4];
-
 }
 
-function multiply(list){
+function multiply(list) {
   var answer = 1;
-  for (var i=0; i<list.length; i++){
+  for (var i = 0; i < list.length; i++) {
     answer = answer * list[i]
   }
   return answer;
