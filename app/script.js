@@ -34,6 +34,15 @@ function divisorCount(a, b, k, primes) {
   return countInt;
 }
 
+function philltest(){
+
+  // I think I need to initialise, var, a variable in a recurisve function, only if it 
+  //is undefined, but I fear hoisting / var problem.
+  // does this work. Each recursion needs an indipendant var, and track incrments..
+  b = typeof(b) == 'undefined' ? 0 : b;
+  
+};
+
 /*
  * add in all the integer divisors to an array of primes
  * ie multiple every element by every other in every possible conbination.
@@ -57,13 +66,48 @@ function divisorCount(a, b, k, primes) {
  * ^ 4 of each
  *     ^ 6 of each 
  *           ^ 4 of each
+ * 26 multiplications.
  * 
- * TODO - each column needs an incrementor. or keep the previous ones, and build on top, within limits.
+ * Iterate initial number in the produc (i) from index 0 to one minus length.
+ * Next, j, the number after i, to the end of the array, this gives all the 2 product multiplications
+ *    This is the start point of the list of multiplands which needs to iterate to catch them all.
+ * Then, k, this is an addition, not an index
+ *  starting at zero for the two case(just j), then incrementing to len(index), 
+ *  which is less than len minus the start on muliplands, j. IE from where we are to the end, in indexes.
+ * 
  * 
  * return an array of all divisors
  */
-
 function allDivisors(primes) {
+  var allDivisors = [];
+  var len = primes.length;
+  console.log("Prime factors " + primes.toString() + " length " + len);
+
+  var temp = [];
+  for (var i = 0; i < len - 1; i++) {
+    //console.log("Multipler index " + i);
+    temp = [primes[i]];
+    var incrementor = -1;
+
+    for (var j = i + 1; j <= len; j++) {
+      console.log("increment j");
+      
+
+      for (var k = 0; k < (len - j); k++) {
+        //console.log("Additional multipland " + (j + k));
+        temp.push(primes[j + k]);
+        console.log("Push " + temp.toString());
+        //allDivisors.push(temp);
+      }
+      //console.log("Reset to i");
+      temp = [primes[i]];
+    }
+    //console.log("reset again?");
+  }
+
+}
+
+function allDivisors_org(primes) {
   var allDivisors = [];
   var len = primes.length;
   console.log("Prime factors " + primes.toString() + " length " + len);
