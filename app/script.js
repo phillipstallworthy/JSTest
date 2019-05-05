@@ -43,6 +43,32 @@ function philltest(){
   
 };
 
+
+function allDivisors(primes) {
+  var allDivisors = [];
+  var len = primes.length;
+  console.log("Prime factors " + primes.toString() + " length " + len);
+
+  for (var i = 0; i < len; i++){
+    var temp = [];
+    temp.push(primes[i]);
+    //console.log(temp.toString());
+    addPush(allDivisors, i, primes, temp);
+  }
+  for (var j = 0; j < allDivisors.length; j++){
+    console.log(allDivisors[j]);
+  }
+}
+
+// add the next prime number after i to temp, push array to all Divisors, up to end of primes
+function addPush (allDivisors, i, primes, temp){
+  if ((i + 1) > (primes.length - 1)) return;
+  temp.push(primes[i + 1]);
+  allDivisors.push(temp.slice(0)); //slicing here avoids pushing the same referenced array.
+  addPush(allDivisors, i + 1, primes, temp);
+}
+
+
 /*
  * add in all the integer divisors to an array of primes
  * ie multiple every element by every other in every possible conbination.
@@ -78,7 +104,7 @@ function philltest(){
  * 
  * return an array of all divisors
  */
-function allDivisors(primes) {
+function allDivisors_(primes) {
   var allDivisors = [];
   var len = primes.length;
   console.log("Prime factors " + primes.toString() + " length " + len);
@@ -107,6 +133,8 @@ function allDivisors(primes) {
 
 }
 
+
+// works, but missing the ones with gaps.
 function allDivisors_org(primes) {
   var allDivisors = [];
   var len = primes.length;
